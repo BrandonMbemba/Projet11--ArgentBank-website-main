@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react'
+import { Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import Header from './components/header.jsx'
+import Home from '../pages/Home.jsx'
+import Login from '../pages/Signin.jsx'
+import Profile from '../pages/Profile.jsx'
+import '../sass/index.scss'
+import Footer from './components/footer.jsx'
+import { Route, Routes } from 'react-router-dom'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App () {
+  const isConnected = useSelector((state) => state.auth.isConnected);
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<Login />} />
+        <Route 
+                    path='profile' 
+                    element={isConnected ? <Profile /> : <Navigate to="/signin" />} 
+                />
+      </Routes>
+      <Footer />
+    </div>
   )
 }
-
-export default App
